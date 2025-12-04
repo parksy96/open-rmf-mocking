@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <title>Simple Open-RMF Page</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js"></script>
+
+    <style>
+        body { font-family: 'Arial', sans-serif; text-align: center; padding-top: 50px; background-color: #f4f4f4; }
+        
+        h1 { color: #333; }
+
+        /* 1. 로봇이 다닐 길 (트랙) */
+        .track-container {
+            position: relative;
+            width: 800px;  /* 트랙 길이 */
+            height: 10px;
+            background-color: #ccc;
+            margin: 50px auto;
+            border-radius: 5px;
+        }
+
+        /* 2. 움직이는 로봇 (점) */
+        .robot-dot {
+            position: absolute;
+            top: -15px; /* 트랙 위로 살짝 올라옴 */
+            left: 0px;  /* JS 코드로 움직임 */
+            width: 40px;
+            height: 40px;
+            background-color: #FF0055; 
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: left 0.1s linear; /* 부드러운 움직임 효과 */
+            
+            /* 중앙 정렬용 */
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold; font-size: 12px;
+        }
+
+        /* 상태창 디자인 */
+        .status-box {
+            display: inline-block;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <h1> Open-RMF 선형 움직임 테스트 1</h1>
+
+    <div class="track-container">
+        <div id="my-robot" class="robot-dot">Bot</div>
+    </div>
+
+    <div class="status-box">
+        <p><strong>연결 상태:</strong> <span id="status" style="color:red">🔴 연결 끊김</span></p>
+        <p><strong>로봇 이름:</strong> <span id="bot-name">-</span></p>
+        <p><strong>현재 위치 (X):</strong> <span id="pos-x">0.00</span> m</p>
+        <p><strong>배터리:</strong> <span id="battery">0</span> %</p>
+    </div>
+
+    <script type="text/javascript">
+        // 1. ROSBridge (웹소켓) 연결
+        var ros = new ROSLIB.Ros({
+            url : 'ws://localhost:9090'
+        });
+
+        // 연결 상태 처리
+        ros.on('connection', function() {
+            document.getElementById("status").innerHTML = "🟢 연결됨 (Online)";
+            document.getElementById("status").style.color = "green";
+        });
+
+        ros.on('error', function(error) {
+            document.getElementById("status").innerHTML = "🔴 오류 (Rosbridge 확인필요)";
+        });
+
+        ros.on('close', function() {
+            document.getElementById("status").innerHTML = "⚪ 연결 종료";
+        });
+
+        // 2. 토픽 구독 (Topic Subscription)
+        var fleetListener = new ROSLIB.Topic({
+            ros : ros,
+            name : '/fleet_states',
+            messageType : 'rmf_fleet_msgs/msg/FleetState'
+        });
+
+        // 3. 데이터가 들어올 때마다 실행되는 함수
+        fleetListener.subscribe(function(msg) {
+            // 데이터가 비어있지 않은지 확인
+            if (msg.robots && msg.robots.length > 0) {
+                var robot = msg.robots[0];
+                var x = robot.location.x; // 실제 좌표 (0.0 ~ 10.0)
+
+                // 텍스트 정보 업데이트
+                document.getElementById("bot-name").innerText = robot.name;
+                document.getElementById("pos-x").innerText = x.toFixed(2);
+                document.getElementById("battery").innerText = robot.battery_percent;
+
+                // 좌표를 화면 픽셀로 변환
+                // 0m -> 0px, 10m -> 760px (로봇크기 고려)
+                var max_dist = 10.0; 
+                var track_width = 760; 
+                var pixel_pos = (x / max_dist) * track_width;
+
+                // 화면에 반영
+                document.getElementById("my-robot").style.left = pixel_pos + "px";
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+# ROS 2 build artifacts (절대 올리면 안됨)
+build/
+install/
+log/
+.colcon/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.class
+venv/
+.venv/
+
+# IDE settings
+.vscode/
+.idea/
+
+# Traffic Editor backups
+*.building.yaml~
+
+# Backup folder (혹시 백업 폴더도 제외하고 싶다면 주석 제거)
+# backup/
