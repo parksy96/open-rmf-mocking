@@ -2,7 +2,7 @@
 
 ![ROS 2 Humble](https://img.shields.io/badge/ROS%202-Humble-blue) ![Open-RMF](https://img.shields.io/badge/Open--RMF-22.09-orange) ![Python](https://img.shields.io/badge/Python-3.10-yellow) ![Streamlit](https://img.shields.io/badge/Streamlit-1.28-red)
 
-**Open-RMF의 데이터 흐름과 관제 시스템 테스트 프로젝트**
+**Open-RMF 관제 시스템 테스트 프로젝트**
 
 가상 로봇(Mock Robot)을 생성하고, Custom Adapter를 통해 Open-RMF와 통신하며, Streamlit 기반의 웹 대시보드에서 실시간 모니터링 및 제어(Start/Stop)를 수행
 
@@ -39,7 +39,7 @@ graph LR
       * **Visualization**: HTML5/CSS/JS + roslibjs를 사용하여 시각화 구현
 
 
-## 🛠️ Prerequisites (환경 설정)
+## 🛠️ Prerequisites
 
   * **OS**: Ubuntu 22.04 LTS
   * **Middleware**: ROS 2 Humble Hawksbill
