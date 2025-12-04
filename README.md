@@ -10,7 +10,7 @@
 
 ## 🏗️ Architecture
 
-본 프로젝트는 **Mocking Client**와 **RMF Adapter**, 그리고 **Web Interface**가 유기적으로 연결된 구조입니다.
+ **Mocking Client** - **RMF Adapter** - **Web UI** 구조
 
 ```mermaid
 graph LR
