@@ -6,11 +6,10 @@
 
 가상 로봇(Mock Robot)을 생성하고, Custom Adapter를 통해 Open-RMF와 통신하며, Streamlit 기반의 웹 대시보드에서 실시간 모니터링 및 제어(Start/Stop)를 수행
 
----
 
 ## 🏗️ Architecture
 
- **Mocking Client** - **RMF Adapter** - **Web UI** 구조
+ **Mocking Client** - **RMF Adapter** - **Web UI** Structure
 
 ```mermaid
 graph LR
@@ -39,7 +38,6 @@ graph LR
       * **Control**: Python Streamlit의 위젯 사용
       * **Visualization**: HTML5/CSS/JS + roslibjs를 사용하여 시각화 구현
 
------
 
 ## 🛠️ Prerequisites (환경 설정)
 
@@ -59,13 +57,10 @@ sudo apt install ros-humble-rosbridge-server
 pip install streamlit
 ```
 
------
 
 ## 🚀 How to Run
 
 ### 1\. Build Package
-
-작업 공간(Workspace)에서 패키지를 빌드
 
 ```bash
 cd ~/Open-RMF/rmf_ws
@@ -75,8 +70,6 @@ source install/setup.bash
 
 ### 2\. Run Adapter (Terminal 1)
 
-Open-RMF와 로봇 사이의 통역사 역할을 하는 어댑터를 실행
-
 ```bash
 source ~/Open-RMF/rmf_ws/install/setup.bash
 ros2 run simple_linear_adapter adapter
@@ -84,15 +77,11 @@ ros2 run simple_linear_adapter adapter
 
 ### 3\. Run Mock Robot (Terminal 2)
 
-가상 로봇을 실행하여 어댑터에 접속
-
 ```bash
 python3 mock_robot_client.py
 ```
 
 ### 4\. Run Rosbridge (Terminal 3)
-
-웹 브라우저와 ROS 2 간의 통신을 위한 브릿지를 실행
 
 ```bash
 source /opt/ros/humble/setup.bash
@@ -101,8 +90,6 @@ ros2 launch rosbridge_server rosbridge_websocket_launch.xml
 
 ### 5\. Run Dashboard (Terminal 4)
 
-Streamlit 대시보드를 실행
-
 ```bash
 source /opt/ros/humble/setup.bash
 streamlit run rmf_dashboard.py
@@ -110,7 +97,6 @@ streamlit run rmf_dashboard.py
 
 **접속 주소**: [http://localhost:8501](https://www.google.com/search?q=http://localhost:8501)
 
------
 
 ## 📂 File Structure
 
